@@ -891,7 +891,7 @@ likeBtn.addEventListener('click', async () => {
         fd.append('action', 'update_like');
         fd.append('liked', likeData.liked);
         
-        const res = await fetch('./api.php', { method: 'POST', body: fd });
+        const res = await fetch('/api.php', { method: 'POST', body: fd });
         const data = await res.json();
         
         if(data.success) {
@@ -961,7 +961,7 @@ document.getElementById('contactForm').addEventListener('submit', async e => {
         fd.append('email', document.getElementById('email').value);
         fd.append('message', document.getElementById('message').value);
         
-        const res = await fetch('./api.php', { method: 'POST', body: fd });
+        const res = await fetch('/api.php', { method: 'POST', body: fd });
         const data = await res.json();
         
         if (data.success) {
