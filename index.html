@@ -691,71 +691,62 @@ Dikembangkan oleh Muhammad Syafiq.</p><div class="project-stack"><span class="pr
                         <div class="contact-info-icon"><i class="fas fa-location-dot"></i></div>
                         <div>
                             <div class="contact-info-label">Lokasi</div>
-                            <div class="contact-info-value">Purbalingga, Jawa Tengah, ID</div>
+                            <div class="contact-info-value">Purbalingga, Indonesia</div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="fade-up" style="transition-delay:0.1s">
-                <form id="contactForm" class="contact-form">
+                <form class="contact-form" id="contact-form">
                     <div class="form-row">
                         <div class="form-field">
-                            <input type="text" id="name" placeholder="Nama" required>
+                            <input type="text" name="name" placeholder="Nama lengkap" required>
                         </div>
                         <div class="form-field">
-                            <input type="email" id="email" placeholder="Email" required>
+                            <input type="email" name="email" placeholder="Alamat email" required>
                         </div>
                     </div>
                     <div class="form-field">
-                        <textarea id="message" rows="6" placeholder="Pesan…" required></textarea>
+                        <input type="text" name="subject" placeholder="Subjek pesan">
+                    </div>
+                    <div class="form-field">
+                        <textarea name="message" rows="5" placeholder="Tulis pesan Anda di sini..." required></textarea>
                     </div>
                     <div class="form-submit">
-                        <p style="font-size:0.8125rem; color:var(--text-muted)">Pesan akan dikirim ke inbox saya.</p>
-                        <button type="submit" class="btn-primary" id="submitBtn">
-                            Kirim <i class="fas fa-paper-plane" style="font-size:0.75rem"></i>
-                        </button>
+                        <span style="font-size:0.75rem; color:var(--text-muted);">Aman & terenkripsi</span>
+                        <button type="submit" class="btn-primary">Kirim Pesan <i class="fas fa-paper-plane" style="font-size:0.75rem"></i></button>
                     </div>
                 </form>
             </div>
         </div>
- 
-        <!-- BOTTOM BAR -->
-        <div class="bottom-bar fade-up" style="transition-delay:0.15s">
+
+        <div class="bottom-bar fade-up">
             <div class="bottom-bar-inner">
-                <div>
-                    <div class="like-btn" id="likeBtn">
-                        <i class="fas fa-heart" id="likeIcon"></i>
-                        <span id="likeCount">0</span>
-                        <span style="color:var(--text-muted)">likes</span>
+                <button class="like-btn" id="like-btn">
+                    <i class="far fa-heart"></i>
+                    <span>Apakah Anda menyukai desain ini?</span>
+                </button>
+                
+                <div class="music-wrap">
+                    <button class="music-play" id="music-btn"><i class="fas fa-play"></i></button>
+                    <div class="music-text">
+                        <div class="music-track">Lofi Chill Beats</div>
+                        <div class="music-artist-name">Unknown Artist</div>
                     </div>
-                    <p id="likeLabel" style="font-size:0.75rem; color:var(--text-muted); margin-top:0.5rem;">Suka website ini? Tinggalkan jejak.</p>
-                </div>
-                <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
-                    <div class="music-wrap">
-                        <button class="music-play" id="playBtn"><i class="fas fa-play" id="playIcon"></i></button>
-                        <div class="music-text">
-                            <div class="music-track">Lesung Pipi</div>
-                            <div class="music-artist-name">Raim Laode</div>
-                        </div>
-                        <div class="music-prog" id="musicProg">
-                            <div class="music-prog-fill" id="musicProgFill"></div>
-                        </div>
-                        <span class="music-t" id="musicTime">0:00</span>
-                    </div>
-                    <div style="font-size:0.75rem; color:var(--text-muted); display:flex; align-items:center; gap:0.4rem;">
-                        <i class="fas fa-server" style="font-size:0.6875rem; color:var(--accent)"></i>
-                        cPanel
-                    </div>
+                    <div class="music-prog" id="music-prog"><div class="music-prog-fill" id="music-prog-fill"></div></div>
+                    <span class="music-t" id="music-time">0:00</span>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 <!-- FOOTER -->
 <footer>
     <div class="container">
         <div class="footer-inner">
-           <p class="footer-copy">© <span id="footerYear"></span> <span>Muhammad Syafiq</span> — dibuat dengan niat.</p>
+            <div class="footer-copy">&copy; 2025 <span>Muhammad Syafiq.</span> Dibuat dengan dedikasi.</div>
             <div class="footer-socials">
                 <a href="https://github.com/Syafff211" target="_blank"><i class="fab fa-github"></i></a>
                 <a href="https://x.com/SyafffStoree" target="_blank"><i class="fab fa-twitter"></i></a>
@@ -766,206 +757,85 @@ Dikembangkan oleh Muhammad Syafiq.</p><div class="project-stack"><span class="pr
     </div>
 </footer>
 
-<!-- BACK TO TOP -->
-<button id="back-top"><i class="fas fa-arrow-up"></i></button>
-
-<!-- SUCCESS MODAL -->
+<!-- MODAL -->
 <div id="modal">
     <div class="modal-box">
         <div class="modal-icon"><i class="fas fa-check"></i></div>
-        <div class="modal-title">Pesan terkirim</div>
-        <p class="modal-body">Terima kasih sudah menghubungi saya. Saya akan balas secepatnya.</p>
-        <button class="modal-close" id="modalClose">Tutup</button>
+        <h3 class="modal-title">Pesan Terkirim!</h3>
+        <p class="modal-body">Terima kasih sudah menghubungi saya. Saya akan membalas pesan Anda secepatnya.</p>
+        <button class="modal-close" id="modal-close-btn">Tutup</button>
     </div>
 </div>
-<audio id="audio" preload="auto"><source src="lesungpipi.mp3" type="audio/mpeg"></audio>
 
+<!-- BACK TO TOP -->
+<button id="back-top"><i class="fas fa-arrow-up"></i></button>
+
+<!-- UNICORN STUDIO SCRIPT -->
+<script src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.29/dist/unicornStudio.umd.js"></script>
+
+<!-- MAIN JAVASCRIPT -->
 <script>
-// ── PRELOADER ──
-window.addEventListener('load', () => {
-    const preloader = document.getElementById('preloader-el');
-    
-    // Tunggu sampai font lokal 'Noto Serif JP' selesai di-load
-    document.fonts.ready.then(() => {
-        if(preloader) { 
-            // Hapus preloader setelah animasi selesai (4.5 detik total)
-            setTimeout(() => preloader.remove(), 4500); 
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        const preloader = document.getElementById('preloader-el');
+        if (preloader) {
+            setTimeout(() => { preloader.style.display = 'none'; }, 4400);
         }
-    });
-});
 
-// ── NAV ──
-const navbar = document.getElementById('navbar');
+        const navbar = document.getElementById('navbar');
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-links a');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) navbar.classList.add('scrolled');
+            else navbar.classList.remove('scrolled');
 
-window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 20);
-    document.getElementById('back-top').classList.toggle('show', window.scrollY > 400);
-});
-
-// ── ACTIVE NAV ──
-const sections = document.querySelectorAll('section[id]');
-const navAs = document.querySelectorAll('.nav-links a');
-const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-        if (e.isIntersecting) {
-            navAs.forEach(a => a.classList.remove('active'));
-            const active = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
-            if (active) active.classList.add('active');
-        }
-    });
-}, { rootMargin: '-40% 0px -55% 0px' });
-sections.forEach(s => observer.observe(s));
-
-// ── FADE-UP ──
-const fadeEls = document.querySelectorAll('.fade-up');
-const fadeObs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('visible'); fadeObs.unobserve(e.target); }
-    });
-}, { threshold: 0.12 });
-fadeEls.forEach(el => fadeObs.observe(el));
-
-// ── BACK TO TOP ──
-document.getElementById('back-top').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-
-// ── PROJECT FILTER ──
-document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const filter = btn.dataset.filter;
-        document.querySelectorAll('.project-card').forEach(card => {
-            const show = filter === 'all' || card.dataset.category === filter;
-            card.style.display = show ? '' : 'none';
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 150;
+                if (scrollY >= sectionTop) current = section.getAttribute('id');
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+            });
         });
-    });
-});
 
-// ── TOAST ──
-function showToast(msg, duration = 2500) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), duration);
-}
+        const faders = document.querySelectorAll('.fade-up:not(.visible)');
+        const appearOnScroll = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+        faders.forEach(fader => appearOnScroll.observe(fader));
 
-// ==========================================
-// 1. SISTEM LIKE (Tersinkronisasi ke Server)
-// ==========================================
-const likeBtn = document.getElementById('like-btn'); // Sesuaikan dengan ID di HTML
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
 
-let likeData = { count: 0, liked: false };
-const API_URL = 'https://codingmutulingga.com/syafiq/api'; // Dijadikan variabel supaya rapi
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const filter = btn.getAttribute('data-filter');
 
-// Ambil jumlah like asli dari server saat pertama load
-async function fetchLikes() {
-    try {
-        // Tambahkan ?action=get_likes
-        const res = await fetch(`${API_URL}?action=get_likes`);
-        const data = await res.json();
-        if(data.success) {
-            likeData.count = data.count;
-            // Cek apakah user ini pernah klik like sebelumnya (disimpan di browser)
-            likeData.liked = localStorage.getItem('user_liked_syafiq') === 'true';
-        } else {
-            console.log('Gagal ambil likes dari server:', data.message);
-        }
-    } catch(e) { 
-        console.log('Gagal fetch likes, pakai lokal:', e); 
-    }
-    renderLike();
-}
+                projectCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'block';
+                        card.style.opacity = '0'; card.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                            card.style.opacity = '1'; card.style.transform = 'translateY(0)';
+                        }, 50);
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
 
-// Render UI Like
-function renderLike() {
-    if(!likeBtn) return;
-    
-    // Cari elemen icon dan teks di dalam tombol (karena tidak pakai ID tunggal)
-    const likeIcon = likeBtn.querySelector('i');
-    const likeLabelEl = likeBtn.querySelector('span');
-    
-    if(likeLabelEl) {
-        likeLabelEl.textContent = likeData.liked ? `Suka (${likeData.count})` : (likeData.count > 0 ? `Suka (${likeData.count})` : 'Apakah Anda menyukai desain ini?');
-    }
-    
-    likeBtn.classList.toggle('liked', likeData.liked);
-    if(likeIcon) {
-        likeIcon.className = likeData.liked ? 'fas fa-heart' : 'far fa-heart';
-    }
-}
-
-likeBtn.addEventListener('click', async () => {
-    likeData.liked = !likeData.liked;
-    
-    try {
-        const fd = new FormData();
-        fd.append('action', 'update_like');
-        fd.append('liked', likeData.liked);
-        
-        // BUG DIPERBAIKI: Hapus tanda / di depan URL
-        const res = await fetch(API_URL, { method: 'POST', body: fd });
-        const data = await res.json();
-        
-        if(data.success) {
-            likeData.count = data.count; // Update jumlah dari server
-            // Simpan status ke browser user
-            localStorage.setItem('user_liked_syafiq', likeData.liked);
-        } else {
-            // Fallback lokal jika server gagal
-            likeData.count = likeData.liked ? likeData.count + 1 : Math.max(0, likeData.count - 1);
-        }
-    } catch(e) {
-        // Fallback lokal jika koneksi gagal
-        likeData.count = likeData.liked ? likeData.count + 1 : Math.max(0, likeData.count - 1);
-    }
-    
-    renderLike();
-});
-
-fetchLikes(); // Panggil saat halaman load
-
-// ── MUSIC ──
-const audio = document.getElementById('audio');
-const playBtn = document.getElementById('playBtn');
-const playIcon = document.getElementById('playIcon');
-const progFill = document.getElementById('musicProgFill');
-const timeEl = document.getElementById('musicTime');
-const progBar = document.getElementById('musicProg');
-let playing = false;
-
-playBtn.addEventListener('click', async () => {
-    try {
-        if (playing) {
-            audio.pause();
-            playIcon.className = 'fas fa-play';
-        } else {
-            await audio.play();
-            playIcon.className = 'fas fa-pause';
-        }
-        playing = !playing;
-    } catch (e) {
-        showToast('Gagal memuat audio. Pastikan file tersedia.');
-    }
-});
-
-audio.addEventListener('timeupdate', () => {
-    const pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
-    progFill.style.width = pct + '%';
-    const m = Math.floor(audio.currentTime / 60);
-    const s = Math.floor(audio.currentTime % 60).toString().padStart(2, '0');
-    timeEl.textContent = `${m}:${s}`;
-});
-
-progBar.addEventListener('click', e => {
-    if (audio.duration) {
-        audio.currentTime = (e.offsetX / progBar.offsetWidth) * audio.duration;
-    }
-});
-// ==========================================
-// 2. FORM KONTAK (Kirim ke Folder Messages)
-// ==========================================
-        // ── GANTI URL INI DENGAN URL HOSTING cPanel ANDA ──
-        const API_URL = 'https://codingmutulingga.com/syafiq/api/'; 
+        const API_URL = 'https://codingmutulingga.com/syafiq/api.php'; 
 
         const contactForm = document.getElementById('contact-form');
         const modal = document.getElementById('modal');
@@ -1002,24 +872,97 @@ progBar.addEventListener('click', e => {
 
         if (modalCloseBtn) modalCloseBtn.addEventListener('click', () => modal.classList.remove('open'));
         if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('open'); });
-// ── AUTO YEAR FOOTER ──
-const yearEl = document.getElementById('footerYear');
-if (yearEl) {
-    yearEl.textContent = new Date().getFullYear();
-}
-// ── MODAL CLOSE ──
-document.getElementById('modalClose').addEventListener('click', () => {
-    document.getElementById('modal').classList.remove('open');
-});
 
-document.getElementById('modal').addEventListener('click', e => {
-    if (e.target === document.getElementById('modal')) {
-        document.getElementById('modal').classList.remove('open');
-    }
-});
+        const likeBtn = document.getElementById('like-btn');
+        let likeData = { count: 0, liked: false };
+
+        async function fetchLikes() {
+            try {
+                const res = await fetch(`${API_URL}?action=get_likes`);
+                const data = await res.json();
+                if(data.success) {
+                    likeData.count = data.count;
+                    likeData.liked = localStorage.getItem('user_liked_syafiq') === 'true';
+                }
+            } catch(e) { console.log('Gagal memuat likes'); }
+            renderLike();
+        }
+
+        function renderLike() {
+            if(!likeBtn) return;
+            const likeIcon = likeBtn.querySelector('i');
+            const likeLabelEl = likeBtn.querySelector('span');
+            if(likeLabelEl) {
+                likeLabelEl.textContent = likeData.liked ? `Suka (${likeData.count})` : (likeData.count > 0 ? `Suka (${likeData.count})` : 'Apakah Anda menyukai desain ini?');
+            }
+            likeBtn.classList.toggle('liked', likeData.liked);
+            if(likeIcon) likeIcon.className = likeData.liked ? 'fas fa-heart' : 'far fa-heart';
+        }
+
+        if (likeBtn) {
+            likeBtn.addEventListener('click', async () => {
+                likeData.liked = !likeData.liked;
+                try {
+                    const fd = new FormData();
+                    fd.append('action', 'update_like');
+                    fd.append('liked', likeData.liked);
+                    const res = await fetch(API_URL, { method: 'POST', body: fd });
+                    const data = await res.json();
+                    if(data.success) {
+                        likeData.count = data.count;
+                        localStorage.setItem('user_liked_syafiq', likeData.liked);
+                    } else {
+                        likeData.count = likeData.liked ? likeData.count + 1 : Math.max(0, likeData.count - 1);
+                    }
+                } catch(e) {
+                    likeData.count = likeData.liked ? likeData.count + 1 : Math.max(0, likeData.count - 1);
+                }
+                renderLike();
+            });
+        }
+        fetchLikes();
+
+        const backTopBtn = document.getElementById('back-top');
+        if (backTopBtn) {
+            window.addEventListener('scroll', () => {
+                backTopBtn.classList.toggle('show', window.scrollY > 600);
+            });
+            backTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        }
+
+        const musicBtn = document.getElementById('music-btn');
+        const musicProgFill = document.getElementById('music-prog-fill');
+        const musicTime = document.getElementById('music-time');
+        let isPlaying = false, musicInterval;
+
+        if (musicBtn) {
+            musicBtn.addEventListener('click', () => {
+                isPlaying = !isPlaying;
+                const icon = musicBtn.querySelector('i');
+                if (isPlaying) {
+                    icon.classList.replace('fa-play', 'fa-pause');
+                    let seconds = 0;
+                    musicInterval = setInterval(() => {
+                        seconds++;
+                        let m = Math.floor(seconds / 60), s = seconds % 60;
+                        musicTime.innerText = `${m}:${s < 10 ? '0' + s : s}`;
+                        musicProgFill.style.width = (seconds % 30) / 30 * 100 + '%';
+                    }, 1000);
+                    showToast('♪ Memutar musik latar...');
+                } else {
+                    icon.classList.replace('fa-pause', 'fa-play');
+                    clearInterval(musicInterval);
+                }
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+    });
 </script>
-<!-- Unicorn Studio Script -->
-<script type="text/javascript">!function(){var u=window.UnicornStudio;if(u&&u.init){if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",function(){u.init()})}else{u.init()}}else{window.UnicornStudio={isInitialized:!1};var i=document.createElement("script");i.src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v2.1.12/dist/unicornStudio.umd.js",i.onload=function(){if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",function(){UnicornStudio.init()})}else{UnicornStudio.init()}},(document.head||document.body).appendChild(i)}}();</script>
-
 </body>
 </html>
