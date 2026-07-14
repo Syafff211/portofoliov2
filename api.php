@@ -1,60 +1,106 @@
-<?php
-header('Content-Type: application/json');
+        // ── GANTI DENGAN URL API PHP ANDA ──
+        const API_URL = 'https://portofolio-syafxx.pages.dev/api.php'; 
 
-// Tentukan path secara terpisah agar lebih rapi
- $messages_dir = __DIR__ . '/messages/';
- $likes_file = __DIR__ . '/likes.txt'; // Kita taruh likes.txt di luar agar mudah diakses
+        // ── CONTACT FORM & MODAL ──
+        const contactForm = document.getElementById('contact-form');
+        const modal = document.getElementById('modal');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
 
-// Buat folder messages jika belum ada (dilakukan di awal, bukan di dalam aksi saja)
-if (!is_dir($messages_dir)) {
-    mkdir($messages_dir, 0755, true);
-}
+        if (contactForm) {
+            contactForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btnSubmit = contactForm.querySelector('.btn-primary');
+                const originalText = btnSubmit.innerHTML;
+                btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
+                btnSubmit.disabled = true;
 
- $action = $_POST['action'] ?? $_GET['action'] ?? '';
+                const formData = new FormData(contactForm);
+                formData.append('action', 'save_message');
 
-// 1. SIMPAN PESAN KONTAK
-if ($action === 'save_message') {
-    $name = strip_tags($_POST['name'] ?? 'Anonim');
-    $email = strip_tags($_POST['email'] ?? '-');
-    $msg = strip_tags($_POST['message'] ?? '');
-    
-    if (empty($msg)) {
-        echo json_encode(['success' => false, 'message' => 'Pesan kosong']);
-        exit;
-    }
+                try {
+                    const res = await fetch(API_URL, {
+                        method: 'POST',
+                        body: formData // Menggunakan FormData agar PHP bisa baca $_POST
+                    });
+                    const data = await res.json();
 
-    $filename = date('Y-m-d_H-i-s') . '_' . preg_replace('/[^a-zA-Z0-9]/', '_', $name) . '.txt';
-    $content = "Dari: $name\nEmail: $email\nTanggal: " . date('d F Y H:i') . "\n\n$msg";
-    
-    if (file_put_contents($messages_dir . $filename, $content)) {
-        echo json_encode(['success' => true]);
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Gagal menyimpan file']);
-    }
-    exit;
-}
+                    if (data.success) {
+                        modal.classList.add('open');
+                        contactForm.reset();
+                    } else {
+                        showToast(data.message || 'Gagal mengirim pesan');
+                    }
+                } catch (error) {
+                    showToast('Gagal terhubung ke server. Cek koneksi internet Anda.');
+                    console.error('Error:', error);
+                } finally {
+                    btnSubmit.innerHTML = originalText;
+                    btnSubmit.disabled = false;
+                }
+            });
+        }
 
-// 2. UPDATE LIKE
-if ($action === 'update_like') {
-    $liked = filter_var($_POST['liked'], FILTER_VALIDATE_BOOLEAN);
-    
-    $current = file_exists($likes_file) ? (int)file_get_contents($likes_file) : 0;
-    $newCount = $liked ? $current + 1 : max(0, $current - 1);
-    
-    if (file_put_contents($likes_file, $newCount) !== false) {
-        echo json_encode(['success' => true, 'count' => $newCount]);
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Gagal update likes. Cek permission folder.']);
-    }
-    exit;
-}
+        if (modalCloseBtn) {
+            modalCloseBtn.addEventListener('click', () => modal.classList.remove('open'));
+        }
+        if (modal) {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.classList.remove('open');
+            });
+        }
 
-// 3. GET LIKE COUNT (Saat awal load)
-if ($action === 'get_likes') {
-    $count = file_exists($likes_file) ? (int)file_get_contents($likes_file) : 0;
-    echo json_encode(['success' => true, 'count' => $count]);
-    exit;
-}
+        // ── LIKE BUTTON (TERHUBUNG KE API) ──
+        const likeBtn = document.getElementById('like-btn');
+        let currentLikes = 0;
 
-echo json_encode(['success' => false, 'message' => 'Aksi tidak valid']);
-?>
+        // Ambil jumlah like awal dari server
+        async function fetchLikes() {
+            try {
+                const res = await fetch(`${API_URL}?action=get_likes`);
+                const data = await res.json();
+                if (data.success) {
+                    currentLikes = data.count;
+                    updateLikeUI(false);
+                }
+            } catch (e) { console.log('Gagal memuat likes'); }
+        }
+        fetchLikes(); // Jalankan saat halaman pertama kali dibuka
+
+        if (likeBtn) {
+            likeBtn.addEventListener('click', async () => {
+                const isLiked = likeBtn.classList.contains('liked');
+                const newLikedStatus = !isLiked;
+
+                try {
+                    const res = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: `action=update_like&liked=${newLikedStatus}`
+                    });
+                    const data = await res.json();
+                    
+                    if (data.success) {
+                        currentLikes = data.count;
+                        updateLikeUI(newLikedStatus);
+                    }
+                } catch (e) {
+                    showToast('Gagal menyimpan like');
+                }
+            });
+        }
+
+        function updateLikeUI(isLiked) {
+            const icon = likeBtn.querySelector('i');
+            const text = likeBtn.querySelector('span');
+            if (isLiked) {
+                likeBtn.classList.add('liked');
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                text.innerText = `Disukai (${currentLikes})`;
+            } else {
+                likeBtn.classList.remove('liked');
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                text.innerText = currentLikes > 0 ? `Suka (${currentLikes})` : 'Apakah Anda menyukai desain ini?';
+            }
+        }
