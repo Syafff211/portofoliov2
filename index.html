@@ -862,7 +862,7 @@ let likeData = { count: 0, liked: false };
 // Ambil jumlah like asli dari server saat pertama load
 async function fetchLikes() {
     try {
-        const res = await fetch('/api.php?action=get_likes');
+        const res = await fetch('https://codingmutulingga.com/syafiq/api.php');
         const data = await res.json();
         if(data.success) {
             likeData.count = data.count;
@@ -891,7 +891,7 @@ likeBtn.addEventListener('click', async () => {
         fd.append('action', 'update_like');
         fd.append('liked', likeData.liked);
         
-        const res = await fetch('/api.php', { method: 'POST', body: fd });
+        const res = await fetch('/https://codingmutulingga.com/syafiq/api.php', { method: 'POST', body: fd });
         const data = await res.json();
         
         if(data.success) {
@@ -961,7 +961,7 @@ document.getElementById('contactForm').addEventListener('submit', async e => {
         fd.append('email', document.getElementById('email').value);
         fd.append('message', document.getElementById('message').value);
         
-        const res = await fetch('/api.php', { method: 'POST', body: fd });
+        const res = await fetch('/https://codingmutulingga.com/syafiq/api.php', { method: 'POST', body: fd });
         const data = await res.json();
         
         if (data.success) {
