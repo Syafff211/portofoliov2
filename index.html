@@ -862,7 +862,7 @@ let likeData = { count: 0, liked: false };
 // Ambil jumlah like asli dari server saat pertama load
 async function fetchLikes() {
     try {
-        const res = await fetch('./api.php?action=get_likes');
+        const res = await fetch('/api.php?action=get_likes');
         const data = await res.json();
         if(data.success) {
             likeData.count = data.count;
