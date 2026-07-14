@@ -852,20 +852,21 @@ function showToast(msg, duration = 2500) {
 // ==========================================
 // 1. SISTEM LIKE (Tersinkronisasi ke Server)
 // ==========================================
-const likeBtn = document.getElementById('likeBtn');
-const likeIcon = document.getElementById('likeIcon');
-const likeCountEl = document.getElementById('likeCount');
-const likeLabelEl = document.getElementById('likeLabel');
+const likeBtn = document.getElementById('like-btn'); // Sesuaikan dengan ID di HTML
 
 let likeData = { count: 0, liked: false };
+const API_URL = 'https://codingmutulingga.com/syafiq/api'; // Dijadikan variabel supaya rapi
 
 // Ambil jumlah like asli dari server saat pertama load
 async function fetchLikes() {
     try {
-        const res = await fetch('https://codingmutulingga.com/syafiq/api.php');
+        // Tambahkan ?action=get_likes
+        const res = await fetch(`${API_URL}?action=get_likes`);
         const data = await res.json();
         if(data.success) {
             likeData.count = data.count;
+            // Cek apakah user ini pernah klik like sebelumnya (disimpan di browser)
+            likeData.liked = localStorage.getItem('user_liked_syafiq') === 'true';
         } else {
             console.log('Gagal ambil likes dari server:', data.message);
         }
@@ -877,10 +878,20 @@ async function fetchLikes() {
 
 // Render UI Like
 function renderLike() {
-    likeCountEl.textContent = likeData.count;
+    if(!likeBtn) return;
+    
+    // Cari elemen icon dan teks di dalam tombol (karena tidak pakai ID tunggal)
+    const likeIcon = likeBtn.querySelector('i');
+    const likeLabelEl = likeBtn.querySelector('span');
+    
+    if(likeLabelEl) {
+        likeLabelEl.textContent = likeData.liked ? `Suka (${likeData.count})` : (likeData.count > 0 ? `Suka (${likeData.count})` : 'Apakah Anda menyukai desain ini?');
+    }
+    
     likeBtn.classList.toggle('liked', likeData.liked);
-    likeIcon.className = likeData.liked ? 'fas fa-heart' : 'far fa-heart';
-    likeLabelEl.textContent = likeData.liked ? 'Terima kasih! ❤️' : 'Suka website ini? Tinggalkan jejak.';
+    if(likeIcon) {
+        likeIcon.className = likeData.liked ? 'fas fa-heart' : 'far fa-heart';
+    }
 }
 
 likeBtn.addEventListener('click', async () => {
@@ -891,15 +902,20 @@ likeBtn.addEventListener('click', async () => {
         fd.append('action', 'update_like');
         fd.append('liked', likeData.liked);
         
-        const res = await fetch('/https://codingmutulingga.com/syafiq/api.php', { method: 'POST', body: fd });
+        // BUG DIPERBAIKI: Hapus tanda / di depan URL
+        const res = await fetch(API_URL, { method: 'POST', body: fd });
         const data = await res.json();
         
         if(data.success) {
             likeData.count = data.count; // Update jumlah dari server
+            // Simpan status ke browser user
+            localStorage.setItem('user_liked_syafiq', likeData.liked);
         } else {
+            // Fallback lokal jika server gagal
             likeData.count = likeData.liked ? likeData.count + 1 : Math.max(0, likeData.count - 1);
         }
     } catch(e) {
+        // Fallback lokal jika koneksi gagal
         likeData.count = likeData.liked ? likeData.count + 1 : Math.max(0, likeData.count - 1);
     }
     
@@ -948,35 +964,44 @@ progBar.addEventListener('click', e => {
 // ==========================================
 // 2. FORM KONTAK (Kirim ke Folder Messages)
 // ==========================================
-document.getElementById('contactForm').addEventListener('submit', async e => {
-    e.preventDefault();
-    const btn = document.getElementById('submitBtn');
-    btn.innerHTML = '<span style="opacity:0.7">Mengirim…</span>';
-    btn.disabled = true;
-    
-    try {
-        const fd = new FormData();
-        fd.append('action', 'save_message');
-        fd.append('name', document.getElementById('name').value);
-        fd.append('email', document.getElementById('email').value);
-        fd.append('message', document.getElementById('message').value);
-        
-        const res = await fetch('/https://codingmutulingga.com/syafiq/api.php', { method: 'POST', body: fd });
-        const data = await res.json();
-        
-        if (data.success) {
-            document.getElementById('modal').classList.add('open');
-            e.target.reset();
-        } else {
-            showToast('Gagal: ' + (data.message || 'Coba lagi.'));
+        // ── GANTI URL INI DENGAN URL HOSTING cPanel ANDA ──
+        const API_URL = 'https://codingmutulingga.com/syafiq/api/'; 
+
+        const contactForm = document.getElementById('contact-form');
+        const modal = document.getElementById('modal');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+
+        if (contactForm) {
+            contactForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btnSubmit = contactForm.querySelector('.btn-primary');
+                const originalText = btnSubmit.innerHTML;
+                btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
+                btnSubmit.disabled = true;
+
+                const formData = new FormData(contactForm);
+                formData.append('action', 'save_message');
+
+                try {
+                    const res = await fetch(API_URL, { method: 'POST', body: formData });
+                    const data = await res.json();
+                    if (data.success) {
+                        modal.classList.add('open');
+                        contactForm.reset();
+                    } else {
+                        showToast(data.message || 'Gagal mengirim pesan');
+                    }
+                } catch (error) {
+                    showToast('Gagal terhubung ke server.');
+                } finally {
+                    btnSubmit.innerHTML = originalText;
+                    btnSubmit.disabled = false;
+                }
+            });
         }
-    } catch {
-        showToast('Tidak bisa menghubungi server.');
-    }
-    
-    btn.innerHTML = 'Kirim <i class="fas fa-paper-plane" style="font-size:0.75rem"></i>';
-    btn.disabled = false;
-});
+
+        if (modalCloseBtn) modalCloseBtn.addEventListener('click', () => modal.classList.remove('open'));
+        if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('open'); });
 // ── AUTO YEAR FOOTER ──
 const yearEl = document.getElementById('footerYear');
 if (yearEl) {
